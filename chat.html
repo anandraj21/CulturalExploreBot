@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultural Explore Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f6f8fc, #e2e8f0, #dbeafe, #f3e8ff, #d9f99d);
+            color: #2d3748;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+            animation: bgGradient 15s ease infinite;
+            background-size: 300% 300%;
+        }
+
+        @keyframes bgGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #1f2633, #374151, #1e3a8a, #4a044e, #15803d);
+            color: #e2e8f0;
+            animation: bgGradientDark 15s ease infinite;
+            background-size: 300% 300%;
+        }
+
+        @keyframes bgGradientDark {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            background-color: #ffffff;
+            padding: 1rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        body.dark header {
+            background-color: #2d3748;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-transition {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            animation: colorWipe 0.5s ease-in-out forwards;
+        }
+
+        @keyframes colorWipe {
+            0% { clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); }
+            100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+            animation: titleGlow 6s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 10px rgba(59, 130, 246, 0.3), 0 0 20px rgba(236, 72, 153, 0.3), 0 0 30px rgba(16, 185, 129, 0.3); }
+            33% { text-shadow: 0 0 15px rgba(236, 72, 153, 0.5), 0 0 25px rgba(16, 185, 129, 0.5), 0 0 35px rgba(59, 130, 246, 0.5); }
+            66% { text-shadow: 0 0 15px rgba(16, 185, 129, 0.5), 0 0 25px rgba(59, 130, 246, 0.5), 0 0 35px rgba(236, 72, 153, 0.5); }
+            100% { text-shadow: 0 0 10px rgba(59, 130, 246, 0.3), 0 0 20px rgba(236, 72, 153, 0.3), 0 0 30px rgba(16, 185, 129, 0.3); }
+        }
+
+        header h1 .globe {
+            font-size: 1.25rem;
+            animation: spinGlobe 10s linear infinite;
+        }
+
+        @keyframes spinGlobe {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        body.dark header h1 {
+            color: #60a5fa;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+        }
+
+        header p {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        body.dark header p {
+            color: #cbd5e1;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #6b7280;
+            transition: color 0.3s, transform 0.2s, text-shadow 0.2s;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        body.dark .theme-toggle {
+            color: #e2e8f0;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 900px;
+            margin: 6rem auto 9rem;
+            background: linear-gradient(145deg, #ffffff, #f9fafb, #e0f2fe, #fce7f3, #d9f99d);
+            border-radius: 1rem;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, box-shadow 0.3s;
+            animation: mainGradient 10s ease infinite;
+            background-size: 300% 300%;
+        }
+
+        @keyframes mainGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark main {
+            background: linear-gradient(145deg, #2d3748, #374151, #1e3a8a, #4a044e, #15803d);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            animation: mainGradientDark 10s ease infinite;
+            background-size: 300% 300%;
+        }
+
+        @keyframes mainGradientDark {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .bot-avatar {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            animation: bounce 2s ease-in-out infinite, avatarGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes avatarGlow {
+            0% { text-shadow: 0 0 10px rgba(59, 130, 246, 0.5), 0 0 20px rgba(236, 72, 153, 0.5), 0 0 30px rgba(16, 185, 129, 0.5), 0 0 40px rgba(234, 179, 8, 0.5); }
+            25% { text-shadow: 0 0 15px rgba(236, 72, 153, 0.8), 0 0 25px rgba(16, 185, 129, 0.8), 0 0 35px rgba(234, 179, 8, 0.8), 0 0 45px rgba(59, 130, 246, 0.8); }
+            50% { text-shadow: 0 0 15px rgba(16, 185, 129, 0.8), 0 0 25px rgba(234, 179, 8, 0.8), 0 0 35px rgba(59, 130, 246, 0.8), 0 0 45px rgba(236, 72, 153, 0.8); }
+            75% { text-shadow: 0 0 15px rgba(234, 179, 8, 0.8), 0 0 25px rgba(59, 130, 246, 0.8), 0 0 35px rgba(236, 72, 153, 0.8), 0 0 45px rgba(16, 185, 129, 0.8); }
+            100% { text-shadow: 0 0 10px rgba(59, 130, 246, 0.5), 0 0 20px rgba(236, 72, 153, 0.5), 0 0 30px rgba(16, 185, 129, 0.5), 0 0 40px rgba(234, 179, 8, 0.5); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .chat-container {
+            flex: 1;
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(59, 130, 246, 0.1), rgba(236, 72, 153, 0.1), rgba(16, 185, 129, 0.1), rgba(234, 179, 8, 0.1));
+            animation: chatGradient 12s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes chatGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark .chat-container {
+            background: linear-gradient(145deg, rgba(45, 55, 72, 0.1), rgba(96, 165, 250, 0.1), rgba(244, 114, 182, 0.1), rgba(5, 150, 105, 0.1), rgba(234, 179, 8, 0.1));
+            animation: chatGradientDark 12s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes chatGradientDark {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            line-height: 1.6;
+            font-size: 1rem;
+            animation: slideIn 0.3s ease-out, messageGlow 5s ease-in-out infinite;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        @keyframes messageGlow {
+            0%, 100% { box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); }
+            50% { box-shadow: 0 3px 12px rgba(236, 72, 153, 0.4), 0 3px 18px rgba(16, 185, 129, 0.3), 0 3px 24px rgba(234, 179, 8, 0.2); }
+        }
+
+        .message .emoji {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        .bot-message {
+            background: linear-gradient(145deg, #e8f0fe, #d6e3ff, #bfdbfe, #f3e8ff, #d9f99d, #fef08a);
+            color: #2d3748;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+            animation: botMessageGradient 8s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes botMessageGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .bot-message::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -10px;
+            border-right: 10px solid #e8f0fe;
+            border-bottom: 10px solid transparent;
+        }
+
+        body.dark .bot-message {
+            background: linear-gradient(145deg, #3a4a6a, #2d3748, #1e3a8a, #4a044e, #15803d, #854d0e);
+            color: #e2e8f0;
+            animation: botMessageGradientDark 8s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes botMessageGradientDark {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark .bot-message::before {
+            border-right-color: #3a4a6a;
+        }
+
+        .user-message {
+            background: linear-gradient(145deg, #3b82f6, #2563eb, #ec4899, #16a34a, #facc15, #f87171);
+            color: #ffffff;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+            animation: userMessageGradient 8s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes userMessageGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .user-message::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: -10px;
+            border-left: 10px solid #3b82f6;
+            border-bottom: 10px solid transparent;
+        }
+
+        body.dark .user-message {
+            background: linear-gradient(145deg, #60a5fa, #3b82f6, #f472b6, #22c55e, #fef08a, #ef4444);
+            animation: userMessageGradientDark 8s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes userMessageGradientDark {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark .user-message::before {
+            border-left-color: #60a5fa;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-section {
+            padding: 1.25rem 1.5rem;
+            background-color: #f9fafb;
+            border-top: 1px solid transparent;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            z-index: 1000;
+            transition: background-color 0.3s, border-color 0.3s;
+            animation: inputGradient 12s ease infinite;
+            background-size: 300% 300%;
+            border-image: linear-gradient(90deg, #3b82f6, #ec4899, #16a34a, #facc15, #f87171, #3b82f6) 1;
+            animation: borderGlow 6s ease infinite;
+        }
+
+        @keyframes borderGlow {
+            0% { border-image: linear-gradient(90deg, #3b82f6, #ec4899, #16a34a, #facc15, #f87171, #3b82f6) 1; }
+            20% { border-image: linear-gradient(90deg, #ec4899, #16a34a, #facc15, #f87171, #3b82f6, #ec4899) 1; }
+            40% { border-image: linear-gradient(90deg, #16a34a, #facc15, #f87171, #3b82f6, #ec4899, #16a34a) 1; }
+            60% { border-image: linear-gradient(90deg, #facc15, #f87171, #3b82f6, #ec4899, #16a34a, #facc15) 1; }
+            80% { border-image: linear-gradient(90deg, #f87171, #3b82f6, #ec4899, #16a34a, #facc15, #f87171) 1; }
+            100% { border-image: linear-gradient(90deg, #3b82f6, #ec4899, #16a34a, #facc15, #f87171, #3b82f6) 1; }
+        }
+
+        body.dark .input-section {
+            background-color: #374151;
+            border-top: 1px solid transparent;
+            animation: inputGradientDark 12s ease infinite;
+            background-size: 300% 300%;
+            border-image: linear-gradient(90deg, #60a5fa, #f472b6, #22c55e, #fef08a, #ef4444, #60a5fa) 1;
+            animation: borderGlowDark 6s ease infinite;
+        }
+
+        @keyframes borderGlowDark {
+            0% { border-image: linear-gradient(90deg, #60a5fa, #f472b6, #22c55e, #fef08a, #ef4444, #60a5fa) 1; }
+            20% { border-image: linear-gradient(90deg, #f472b6, #22c55e, #fef08a, #ef4444, #60a5fa, #f472b6) 1; }
+            40% { border-image: linear-gradient(90deg, #22c55e, #fef08a, #ef4444, #60a5fa, #f472b6, #22c55e) 1; }
+            60% { border-image: linear-gradient(90deg, #fef08a, #ef4444, #60a5fa, #f472b6, #22c55e, #fef08a) 1; }
+            80% { border-image: linear-gradient(90deg, #ef4444, #60a5fa, #f472b6, #22c55e, #fef08a, #ef4444) 1; }
+            100% { border-image: linear-gradient(90deg, #60a5fa, #f472b6, #22c55e, #fef08a, #ef4444, #60a5fa) 1; }
+        }
+
+        .question-row, .city-row {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 0.75rem;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .question-row:last-child, .city-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .question-row input,
+        .city-row input,
+        .city-row select {
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            flex: 1;
+            max-width: 200px;
+            background-color: #fff;
+            transition: border-color 0.3s, background-color 0.3s, box-shadow 0.2s;
+            animation: inputGlow 5s ease-in-out infinite;
+        }
+
+        @keyframes inputGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.2); }
+            50% { box-shadow: 0 0 10px rgba(236, 72, 153, 0.4), 0 0 15px rgba(16, 185, 129, 0.3), 0 0 20px rgba(234, 179, 8, 0.2); }
+        }
+
+        .question-row input {
+            max-width: none;
+        }
+
+        .question-row input:focus,
+        .city-row input:focus,
+        .city-row select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+
+        body.dark .question-row input,
+        body.dark .city-row input,
+        body.dark .city-row select {
+            border-color: #6b7280;
+            background-color: #4b5563;
+            color: #e2e8f0;
+            animation: inputGlowDark 5s ease-in-out infinite;
+        }
+
+        @keyframes inputGlowDark {
+            0%, 100% { box-shadow: 0 0 5px rgba(96, 165, 250, 0.2); }
+            50% { box-shadow: 0 0 10px rgba(244, 114, 182, 0.4), 0 0 15px rgba(5, 150, 105, 0.3), 0 0 20px rgba(234, 179, 8, 0.2); }
+        }
+
+        body.dark .question-row input:focus,
+        body.dark .city-row input:focus,
+        body.dark .city-row select:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
+        }
+
+        .question-row button,
+        .city-row button {
+            padding: 0.75rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            background: linear-gradient(145deg, #3b82f6, #ec4899, #16a34a, #facc15, #f87171);
+            color: #ffffff;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: buttonGradient 6s ease infinite;
+            background-size: 400% 400%;
+            min-width: 100px;
+        }
+
+        @keyframes buttonGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .question-row button:hover,
+        .city-row button:hover {
+            background: linear-gradient(145deg, #2563eb, #db2777, #15803d, #eab308, #dc2626);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4), 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        body.dark .question-row button,
+        body.dark .city-row button {
+            background: linear-gradient(145deg, #60a5fa, #f472b6, #22c55e, #fef08a, #ef4444);
+            animation: buttonGradientDark 6s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes buttonGradientDark {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark .question-row button:hover,
+        body.dark .city-row button:hover {
+            background: linear-gradient(145deg, #3b82f6, #db2777, #16a34a, #facc15, #b91c1c);
+            box-shadow: 0 4px 12px rgba(244, 114, 182, 0.4), 0 4px 16px rgba(5, 150, 105, 0.3);
+        }
+
+        .result-section {
+            display: none;
+        }
+
+        .formatted, .news-container {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .news-item {
+            background: #f9fafb;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+            animation: newsGlow 7s ease-in-out infinite;
+        }
+
+        @keyframes newsGlow {
+            0%, 100% { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); }
+            50% { box-shadow: 0 2px 10px rgba(236, 72, 153, 0.3), 0 2px 14px rgba(16, 185, 129, 0.2); }
+        }
+
+        .news-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4), 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        body.dark .news-item {
+            background: #374151;
+            border-color: #4b5563;
+            animation: newsGlowDark 7s ease-in-out infinite;
+        }
+
+        @keyframes newsGlowDark {
+            0%, 100% { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); }
+            50% { box-shadow: 0 2px 10px rgba(244, 114, 182, 0.3), 0 2px 14px rgba(5, 150, 105, 0.2); }
+        }
+
+        .news-item h3, .news-item h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+            text-shadow: 0 0 5px rgba(59, 130, 246, 0.2);
+        }
+
+        body.dark .news-item h3,
+        body.dark .news-item h4 {
+            color: #60a5fa;
+            text-shadow: 0 0 5px rgba(96, 165, 250, 0.2);
+        }
+
+        .news-item p {
+            font-size: 1rem;
+            color: #4b5563;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s;
+        }
+
+        body.dark .news-item p {
+            color: #cbd5e1;
+        }
+
+        .news-item a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        body.dark .news-item a {
+            color: #60a5fa;
+        }
+
+        .news-item a:hover {
+            text-decoration: underline;
+            text-shadow: 0 0 5px rgba(236, 72, 153, 0.3);
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .loading-spinner {
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 2rem;
+            height: 2rem;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 0.75rem;
+            transition: border-color 0.3s;
+        }
+
+        body.dark .loading-spinner {
+            border-color: #4b5563;
+            border-top-color: #60a5fa;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #map {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 0.75rem 1.5rem;
+            }
+
+            header h1 {
+                font-size: 1.25rem;
+            }
+
+            header h1 .globe {
+                font-size: 1rem;
+            }
+
+            header p {
+                font-size: 0.8rem;
+            }
+
+            .theme-toggle {
+                top: 0.75rem;
+                font-size: 1.25rem;
+            }
+
+            main {
+                margin: 5rem 1rem 7rem;
+                border-radius: 0.75rem;
+            }
+
+            .input-section {
+                padding: 1rem 1rem;
+            }
+
+            .question-row, .city-row {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .question-row input,
+            .city-row input,
+            .city-row select {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.9rem;
+                max-width: 100%;
+            }
+
+            .question-row button,
+            .city-row button {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+                min-width: 90px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .bot-avatar {
+                top: -50px;
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGWBV43sy6Y-fczpQ9bDVFA9448D_HMX8&callback=initMap" async defer></script>
+    <script>
+        let map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 0, lng: 0 },
+                zoom: 8
+            });
+        }
+
+        async function fetchCulturalEtiquette() {
+            const city = document.getElementById("cityInput").value.trim();
+            const answerType = document.getElementById("answerType").value;
+
+            if (!city) {
+                displayMessage("Please enter a city name", "bot", false, "🌍");
+                return;
+            }
+
+            displayMessage(`Fetching cultural etiquette for ${city}...`, "bot", false, "🌍");
+
+            try {
+                const geocodeResponse = await fetch(
+                    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(city)}&key=AIzaSyDGWBV43sy6Y-fczpQ9bDVFA9448D_HMX8`
+                );
+
+                const geocodeData = await geocodeResponse.json();
+
+                if (geocodeData.status !== "OK" || geocodeData.results.length === 0) {
+                    throw new Error(`The city "${city}" could not be found. Please check the spelling or try another city.`);
+                }
+
+                const apiKey = "AIzaSyBTPDxJRN1Lamx1d3n0CG44lkaKlmODafo";
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const requestBody = {
+                    contents: [{
+                        parts: [{
+                            text: `Provide a ${answerType} cultural etiquette guide for travelers visiting ${city} in English.`
+                        }]
+                    }]
+                };
+
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (!data.candidates || !data.candidates[0] || !data.candidates[0].content.parts[0].text) {
+                    throw new Error("No valid data returned for the entered city.");
+                }
+
+                let responseText = data.candidates[0].content.parts[0].text;
+
+                responseText = responseText
+                    .replace(/##\s*(.+)/g, "<h3>$1</h3>")
+                    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+                    .replace(/^\*\s(.+)/gm, "<li>$1</li>")
+                    .replace(/\n/g, "<br>");
+
+                responseText = responseText.replace(/(<li>.*?<\/li>)/g, "<ul>$1</ul>");
+
+                const formattedText = `<div>${responseText}</div>`;
+
+                if (responseText.trim().length === 0) {
+                    throw new Error("No content was returned for this city.");
+                }
+
+                displayMessage(formattedText, "bot", false, "🌍");
+                updateMap(city);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                displayMessage(error.message, "bot", true, "⚠️");
+            }
+        }
+
+        async function fetchNews() {
+            const city = document.getElementById("cityInput").value.trim();
+
+            if (!city) {
+                displayMessage("Please enter a city name", "bot", false, "📰");
+                return;
+            }
+
+            displayMessage(`Fetching news for ${city}...`, "bot", false, "📰");
+
+            try {
+                const newsApiKey = "74837529c4044dea88219b81a11ebb50";
+                const newsUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(city)}&language=en&sortBy=publishedAt&apiKey=${newsApiKey}`;
+
+                const newsResponse = await fetch(newsUrl);
+                const newsData = await newsResponse.json();
+
+                if (!newsResponse.ok) {
+                    throw new Error(`News API request failed with status ${newsResponse.status}`);
+                }
+
+                if (!newsData.articles || newsData.articles.length === 0) {
+                    throw new Error(`No news articles found for ${city}.`);
+                }
+
+                const topArticle = newsData.articles[0];
+                const articleContent = `${topArticle.title}. ${topArticle.description || ""}`;
+
+                const geminiApiKey = "AIzaSyBTPDxJRN1Lamx1d3n0CG44lkaKlmODafo";
+                const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`;
+
+                const geminiRequestBody = {
+                    contents: [{
+                        parts: [{
+                            text: `Summarize the following news article in 2-3 sentences, focusing on its cultural or social relevance to ${city}: ${articleContent}`
+                        }]
+                    }]
+                };
+
+                const geminiResponse = await fetch(geminiUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(geminiRequestBody)
+                });
+
+                if (!geminiResponse.ok) {
+                    throw new Error(`Gemini API request failed with status ${geminiResponse.status}`);
+                }
+
+                const geminiData = await geminiResponse.json();
+
+                if (!geminiData.candidates || !geminiData.candidates[0] || !geminiData.candidates[0].content.parts[0].text) {
+                    throw new Error("No summary returned from Gemini.");
+                }
+
+                let summaryText = geminiData.candidates[0].content.parts[0].text;
+                summaryText = summaryText
+                    .replace(/##\s*(.+)/g, "<h4>$1</h4>")
+                    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+                    .replace(/^\*\s(.+)/gm, "<li>$1</li>")
+                    .replace(/\n/g, "<br>");
+
+                const newsItems = [
+                    `
+                    <div class="news-item">
+                        <h3>Summary of Top News for ${city}</h3>
+                        <p>${summaryText}</p>
+                        <a href="${topArticle.url}" target="_blank">Read full article</a>
+                    </div>
+                    `,
+                    ...newsData.articles.slice(1, 5).map(article => `
+                    <div class="news-item">
+                        <h4>${article.title}</h4>
+                        <p>${article.description || "No description available."}</p>
+                        <a href="${article.url}" target="_blank">Read more</a>
+                    </div>
+                    `)
+                ].join("");
+
+                displayMessage(`<div class="news-container">${newsItems}</div>`, "bot", false, "📰");
+            } catch (error) {
+                console.error("Error fetching news or summary:", error);
+                displayMessage(error.message, "bot", true, "⚠️");
+            }
+        }
+
+        async function askQuestion() {
+            const question = document.getElementById("questionInput").value.trim();
+
+            if (!question) {
+                displayMessage("Please enter a question", "bot", false, "❓");
+                return;
+            }
+
+            displayMessage(question, "user");
+            displayMessage(`Processing your question...`, "bot", false, "❓");
+
+            try {
+                const apiKey = "AIzaSyBTPDxJRN1Lamx1d3n0CG44lkaKlmODafo";
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const requestBody = {
+                    contents: [{
+                        parts: [{
+                            text: `Answer the following question in a concise, friendly manner: ${question}`
+                        }]
+                    }]
+                };
+
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (!data.candidates || !data.candidates[0] || !data.candidates[0].content.parts[0].text) {
+                    throw new Error("No valid response returned for the question.");
+                }
+
+                let responseText = data.candidates[0].content.parts[0].text;
+
+                responseText = responseText
+                    .replace(/##\s*(.+)/g, "<h3>$1</h3>")
+                    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+                    .replace(/^\*\s(.+)/gm, "<li>$1</li>")
+                    .replace(/\n/g, "<br>");
+
+                responseText = responseText.replace(/(<li>.*?<\/li>)/g, "<ul>$1</ul>");
+
+                const formattedText = `<div>${responseText}</div>`;
+
+                if (responseText.trim().length === 0) {
+                    throw new Error("No content was returned for this question.");
+                }
+
+                displayMessage(formattedText, "bot", false, "❓");
+            } catch (error) {
+                console.error("Error fetching question response:", error);
+                displayMessage(error.message, "bot", true, "⚠️");
+            }
+
+            document.getElementById("questionInput").value = "";
+        }
+
+        function updateMap(city) {
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address: city }, (results, status) => {
+                if (status === "OK") {
+                    map.setCenter(results[0].geometry.location);
+                    new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                } else {
+                    console.error("Geocode was not successful for the following reason: " + status);
+                }
+            });
+        }
+
+        function redirectToMap() {
+            const city = document.getElementById("cityInput").value.trim();
+            if (!city) {
+                displayMessage("Please enter a city name to view the map.", "bot", false, "🗺️");
+                return;
+            }
+            displayMessage(city, "user");
+            window.location.href = `map.html?city=${encodeURIComponent(city)}`;
+        }
+
+        function displayMessage(content, type, isError = false, emoji = type === "bot" ? "🤖" : "😊") {
+            const chatContainer = document.querySelector(".chat-container");
+            const messageDiv = document.createElement("div");
+            messageDiv.classList.add("message", type === "bot" ? "bot-message" : "user-message");
+            if (isError) {
+                messageDiv.style.background = document.body.classList.contains("dark") ? "linear-gradient(145deg, #4a1a1a, #3d1616)" : "linear-gradient(145deg, #fee2e2, #fecaca)";
+                messageDiv.style.color = document.body.classList.contains("dark") ? "#ff9999" : "#dc2626";
+                messageDiv.style.setProperty('--tail-color', document.body.classList.contains("dark") ? "#4a1a1a" : "#fee2e2");
+            }
+            messageDiv.innerHTML = `<span class="emoji">${emoji}</span>${content}`;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            displayMessage("Hi! I'm your Cultural Explore Bot. Enter a city to explore its etiquette, news, or map, or ask a question!", "bot", false, "🤖");
+
+            const cityInput = document.getElementById("cityInput");
+            cityInput.addEventListener("keydown", function (e) {
+                if (e.key === "Enter") {
+                    const city = cityInput.value.trim();
+                    if (city) {
+                        displayMessage(city, "user");
+                        fetchCulturalEtiquette();
+                    }
+                }
+            });
+
+            const questionInput = document.getElementById("questionInput");
+            questionInput.addEventListener("keydown", function (e) {
+                if (e.key === "Enter") {
+                    askQuestion();
+                }
+            });
+
+            document.querySelectorAll("button:not(.theme-toggle)").forEach(button => {
+                button.addEventListener("click", () => {
+                    const city = cityInput.value.trim();
+                    if (city && button.textContent.includes("Explore Etiquette")) {
+                        displayMessage(city, "user");
+                    } else if (city && button.textContent.includes("Fetch News")) {
+                        displayMessage(city, "user");
+                    } else if (city && button.textContent.includes("Show Map")) {
+                        // Handled in redirectToMap
+                    }
+                });
+            });
+
+            const themeToggle = document.querySelector(".theme-toggle");
+            const header = document.querySelector("header");
+            themeToggle.addEventListener("click", () => {
+                const isDark = document.body.classList.toggle("dark");
+                themeToggle.textContent = isDark ? "☀️" : "🌙";
+
+                // Create transition overlay
+                const transitionDiv = document.createElement("div");
+                transitionDiv.classList.add("theme-transition");
+                transitionDiv.style.backgroundColor = isDark ? "#2d3748" : "#ffffff";
+                header.appendChild(transitionDiv);
+
+                // Remove overlay after animation
+                setTimeout(() => {
+                    transitionDiv.remove();
+                }, 500);
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1><span class="globe">🌍</span> Cultural Explore Bot</h1>
+        <p>Explore customs, news, and maps for your travel destinations</p>
+        <button class="theme-toggle" title="Toggle theme">🌙</button>
+    </header>
+    <main>
+        <div class="bot-avatar">🤖</div>
+        <div class="chat-container"></div>
+        <section class="input-section">
+            <div class="question-row">
+                <input type="text" id="questionInput" placeholder="Ask a question (e.g., What is Japanese culture?)">
+                <button onclick="askQuestion()"><span class="emoji">❓</span> Ask</button>
+            </div>
+            <div class="city-row">
+                <input type="text" id="cityInput" placeholder="Enter a city (e.g., Tokyo, Paris)">
+                <select id="answerType">
+                    <option value="short">Quick Guide</option>
+                    <option value="detailed">In-Depth Guide</option>
+                </select>
+                <button onclick="fetchCulturalEtiquette()"><span class="emoji">🌍</span> Explore Etiquette</button>
+                <button onclick="redirectToMap()"><span class="emoji">🗺️</span> Show Map</button>
+                <button onclick="fetchNews()"><span class="emoji">📰</span> Fetch News</button>
+            </div>
+        </section>
+        <section class="result-section">
+            <div id="result" class="result-text"></div>
+        </section>
+        <div id="map" style="display: none;"></div>
+    </main>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'934729f2593b4c12',t:'MTc0NTM0NjMyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

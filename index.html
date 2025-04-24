@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultural Explore Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f6f8fc, #e2e8f0, #dbeafe, #f3e8ff, #d9f99d);
+            color: #2d3748;
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background 0.3s;
+            animation: bgGradient 15s ease infinite;
+            background-size: 300% 300%;
+        }
+
+        @keyframes bgGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #1f2633, #374151, #1e3a8a, #4a044e, #15803d);
+            color: #e2e8f0;
+            animation: bgGradientDark 15s ease infinite;
+            background-size: 300% 300%;
+        }
+
+        @keyframes bgGradientDark {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        nav {
+            background: #ffffff;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            animation: navGradient 10s ease infinite;
+            background-size: 300% 300%;
+        }
+
+        @keyframes navGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark nav {
+            background: #2d3748;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            animation: navGradientDark 10s ease infinite;
+            background-size: 300% 300%;
+        }
+
+        @keyframes navGradientDark {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #6b7280;
+            transition: color 0.3s, transform 0.2s, text-shadow 0.2s;
+            margin-right: 1rem;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        body.dark .theme-toggle {
+            color: #e2e8f0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            animation: spinGlobe 10s linear infinite;
+        }
+
+        @keyframes spinGlobe {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+            animation: titleGlow 6s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 10px rgba(59, 130, 246, 0.3), 0 0 20px rgba(236, 72, 153, 0.3), 0 0 30px rgba(16, 185, 129, 0.3); }
+            33% { text-shadow: 0 0 15px rgba(236, 72, 153, 0.5), 0 0 25px rgba(16, 185, 129, 0.5), 0 0 35px rgba(59, 130, 246, 0.5); }
+            66% { text-shadow: 0 0 15px rgba(16, 185, 129, 0.5), 0 0 25px rgba(59, 130, 246, 0.5), 0 0 35px rgba(236, 72, 153, 0.5); }
+            100% { text-shadow: 0 0 10px rgba(59, 130, 246, 0.3), 0 0 20px rgba(236, 72, 153, 0.3), 0 0 30px rgba(16, 185, 129, 0.3); }
+        }
+
+        body.dark .logo span {
+            color: #60a5fa;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.3s, transform 0.2s, text-shadow 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #3b82f6;
+            transform: translateY(-2px);
+            text-shadow: 0 0 5px rgba(236, 72, 153, 0.3);
+        }
+
+        body.dark .nav-links a {
+            color: #cbd5e1;
+        }
+
+        body.dark .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        header {
+            text-align: center;
+            padding: 120px 20px 60px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(236, 72, 153, 0.1), rgba(16, 185, 129, 0.1));
+            animation: headerGradient 12s ease infinite;
+            background-size: 300% 300%;
+        }
+
+        @keyframes headerGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark header {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(244, 114, 182, 0.1), rgba(5, 150, 105, 0.1));
+            animation: headerGradientDark 12s ease infinite;
+        }
+
+        @keyframes headerGradientDark {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+            animation: titleGlow 6s ease-in-out infinite;
+        }
+
+        body.dark h1 {
+            color: #e2e8f0;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+            transition: color 0.3s;
+        }
+
+        body.dark .subtitle {
+            color: #cbd5e1;
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #3b82f6, #ec4899, #16a34a, #facc15, #f87171);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: buttonGradient 6s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes buttonGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, #2563eb, #db2777, #15803d, #eab308, #dc2626);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4), 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        body.dark .cta-button {
+            background: linear-gradient(135deg, #60a5fa, #f472b6, #22c55e, #fef08a, #ef4444);
+            animation: buttonGradientDark 6s ease infinite;
+        }
+
+        @keyframes buttonGradientDark {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark .cta-button:hover {
+            background: linear-gradient(135deg, #3b82f6, #db2777, #16a34a, #facc15, #b91c1c);
+        }
+
+        .faq-section, .about-section, .contact-section {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 2rem;
+            background: linear-gradient(145deg, #ffffff, #f9fafb, #e0f2fe, #fce7f3);
+            border-radius: 1rem;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+            animation: sectionGradient 10s ease infinite;
+            background-size: 300% 300%;
+        }
+
+        @keyframes sectionGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark .faq-section,
+        body.dark .about-section,
+        body.dark .contact-section {
+            background: linear-gradient(145deg, #2d3748, #374151, #1e3a8a, #4a044e);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            animation: sectionGradientDark 10s ease infinite;
+        }
+
+        @keyframes sectionGradientDark {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .faq-section.visible, .about-section.visible, .contact-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .faq-section h2, .about-section h2, .contact-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+            animation: titleGlow 6s ease-in-out infinite;
+        }
+
+        body.dark .faq-section h2, body.dark .about-section h2, body.dark .contact-section h2 {
+            color: #e2e8f0;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+        }
+
+        .faq-item {
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: faqGlow 7s ease-in-out infinite;
+        }
+
+        @keyframes faqGlow {
+            0%, 100% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); }
+            50% { box-shadow: 0 2px 12px rgba(236, 72, 153, 0.3), 0 2px 16px rgba(16, 185, 129, 0.2); }
+        }
+
+        body.dark .faq-item {
+            background: #374151;
+            animation: faqGlowDark 7s ease-in-out infinite;
+        }
+
+        @keyframes faqGlowDark {
+            0%, 100% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
+            50% { box-shadow: 0 2px 12px rgba(244, 114, 182, 0.3), 0 2px 16px rgba(5, 150, 105, 0.2); }
+        }
+
+        .faq-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4), 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .faq-item h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #3b82f6;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px rgba(59, 130, 246, 0.2);
+        }
+
+        body.dark .faq-item h3 {
+            color: #60a5fa;
+            text-shadow: 0 0 5px rgba(96, 165, 250, 0.2);
+        }
+
+        .faq-item p, .about-section p, .contact-section p {
+            font-size: 1.1rem;
+            color: #4b5563;
+            transition: color 0.3s;
+        }
+
+        body.dark .faq-item p, body.dark .about-section p, body.dark .contact-section p {
+            color: #cbd5e1;
+        }
+
+        .contact-section a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s, text-shadow 0.2s;
+        }
+
+        body.dark .contact-section a {
+            color: #60a5fa;
+        }
+
+        .contact-section a:hover {
+            color: #2563eb;
+            text-decoration: underline;
+            text-shadow: 0 0 5px rgba(236, 72, 153, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: #ffffff;
+            color: #6b7280;
+            font-size: 0.9rem;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+            transition: background 0.3s, color 0.3s;
+            animation: footerGradient 10s ease infinite;
+            background-size: 300% 300%;
+        }
+
+        @keyframes footerGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark footer {
+            background: #2d3748;
+            color: #cbd5e1;
+            animation: footerGradientDark 10s ease infinite;
+        }
+
+        @keyframes footerGradientDark {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .theme-toggle {
+                position: absolute;
+                top: 1rem;
+                left: 1rem;
+            }
+
+            .logo span {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-links a {
+                font-size: 0.9rem;
+            }
+
+            header {
+                padding: 100px 15px 40px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .cta-button {
+                font-size: 1rem;
+                padding: 12px 24px;
+            }
+
+            .faq-section h2, .about-section h2, .contact-section h2 {
+                font-size: 2rem;
+            }
+
+            .faq-item h3 {
+                font-size: 1.3rem;
+            }
+
+            .faq-item p, .about-section p, .contact-section p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 0.75rem;
+            }
+
+            header {
+                padding: 80px 10px 30px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <button class="theme-toggle" title="Toggle theme">🌙</button>
+        <div class="logo">
+            <img src="https://static.vecteezy.com/system/resources/previews/026/309/247/non_2x/robot-chat-or-chat-bot-logo-modern-conversation-automatic-technology-logo-design-template-vector.jpg" alt="Logo">
+            <span>Cultural Explore Bot</span>
+        </div>
+        <div class="nav-links">
+            <a href="#faq">FAQ</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact Us</a>
+        </div>
+    </nav>
+
+    <header>
+        <h1>Explore Global Cultures</h1>
+        <p class="subtitle">Your gateway to understanding customs, news, and cultural landmarks worldwide</p>
+        <a href="chat.html" class="cta-button">Start Exploring</a>
+    </header>
+
+    <section id="faq" class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <h3>What is the Cultural Explore Bot?</h3>
+            <p>Our bot is a smart companion for travelers, offering cultural etiquette, local news, and interactive maps for any city, helping you navigate and appreciate global cultures.</p>
+        </div>
+        <div class="faq-item">
+            <h3>How do I use it?</h3>
+            <p>Enter a city name to access cultural insights, recent news, or a map of cultural sites. You can also ask questions about customs or traditions for instant answers.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Is the information reliable?</h3>
+            <p>Yes, the bot uses real-time data and trusted sources to provide accurate and up-to-date cultural and news information tailored to your destination.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Do I need to sign up?</h3>
+            <p>You can explore without an account. Our bot is accessible to all users, allowing you to dive into cultural insights instantly!</p>
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <h2>About Us</h2>
+        <p>We are passionate about fostering cultural understanding and connection. Our mission is to empower travelers with the knowledge to respectfully engage with diverse cultures worldwide. The Cultural Explore Bot is designed to be your trusted guide, blending technology with cultural insights for a seamless experience.</p>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2>Contact Us</h2>
+        <p>Have questions or feedback? Reach out to us at <a href="mailto:support@culturalexplorebot.com">support@culturalexplorebot.com</a>. We're here to help you explore the world with confidence!</p>
+    </section>
+
+    <footer>
+        <p>© 2025 Cultural Explore Bot. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Smooth scroll for nav links
+            document.querySelectorAll('.nav-links a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        e.preventDefault();
+                        document.querySelector(targetId).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Section reveal on scroll
+            const sections = document.querySelectorAll('.faq-section, .about-section, .contact-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Theme toggle
+            const themeToggle = document.querySelector(".theme-toggle");
+            themeToggle.addEventListener("click", () => {
+                const isDark = document.body.classList.toggle("dark");
+                themeToggle.textContent = isDark ? "☀️" : "🌙";
+
+                const transitionDiv = document.createElement("div");
+                transitionDiv.style.position = "fixed";
+                transitionDiv.style.top = "0";
+                transitionDiv.style.left = "0";
+                transitionDiv.style.width = "100%";
+                transitionDiv.style.height = "100%";
+                transitionDiv.style.backgroundColor = isDark ? "#2d3748" : "#ffffff";
+                transitionDiv.style.zIndex = "10000";
+                transitionDiv.style.transition = "opacity 0.5s ease";
+                transitionDiv.style.opacity = "1";
+                document.body.appendChild(transitionDiv);
+
+                setTimeout(() => {
+                    transitionDiv.style.opacity = "0";
+                    setTimeout(() => transitionDiv.remove(), 500);
+                }, 50);
+            });
+        });
+    </script>
+</body>
+</html>
